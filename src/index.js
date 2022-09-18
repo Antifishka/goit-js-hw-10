@@ -17,21 +17,29 @@ refs.inputSearch.addEventListener('input', debounce(onInputSearch, DEBOUNCE_DELA
 function onInputSearch(e) {
     const nameCountry = refs.inputSearch.value.trim();
 
-    clearCountryList();
-    API.fetchCountries(nameCountry)
-        .then((countries) => {
-            if (countries.length > 10) {
-                Notiflix.Notify.info('Too many matches found. Please enter a more specific name.');
-            } else if (countries.length >= 2 && countries.length <= 10) {
-                renderCountryList(countries);
-                console.log(countries);
-            } else {
-                renderCountryInfo(countries);
-                console.log(countries);
-            }
-         }) 
-        .catch(onFetchError);
-}
+    if (nameCountry === '') {
+        clearCountry();
+        return console.warn('Field cannot be emply');
+    }
+        clearCountry()
+        API.fetchCountries(nameCountry)
+            .then((countries) => {
+                if (countries.length > 10) {
+                    Notiflix.Notify.info('Too many matches found. Please enter a more specific name.');
+                } else if (countries.length >= 2 && countries.length <= 10) {
+                    renderCountryList(countries);
+                    console.log(countries);
+                } else {
+                    renderCountryInfo(countries);
+                    console.log(countries);
+                }
+            }) 
+            .catch(onFetchError);
+    } 
+    
+    
+    
+
 
 function renderCountryList(countries) {
   const markup = countries
@@ -61,7 +69,7 @@ function renderCountryInfo(countries) {
     refs.countryInfo.innerHTML = markupInfo;
 }
 
-function clearCountryList() {
+function clearCountry() {
     refs.countryList.innerHTML = '';
     refs.countryInfo.innerHTML = '';
 }
