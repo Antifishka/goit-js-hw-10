@@ -1,8 +1,7 @@
 import './css/styles.css';
 import debounce from 'lodash.debounce';
 import Notiflix from 'notiflix';
-import API from './fetchCountries.js';
-import fetchCountries from './fetchCountries.js';
+import { fetchCountries } from './fetchCountries.js';
 
 const DEBOUNCE_DELAY = 300;
 
@@ -22,7 +21,7 @@ function onInputSearch(e) {
         return console.warn('Field cannot be emply');
     }
         clearCountry()
-        API.fetchCountries(nameCountry)
+        fetchCountries(nameCountry)
             .then((countries) => {
                 if (countries.length > 10) {
                     Notiflix.Notify.info('Too many matches found. Please enter a more specific name.');
@@ -35,12 +34,8 @@ function onInputSearch(e) {
                 }
             }) 
             .catch(onFetchError);
-    } 
+};
     
-    
-    
-
-
 function renderCountryList(countries) {
   const markup = countries
     .map((country) => {
